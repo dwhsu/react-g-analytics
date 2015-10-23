@@ -30,7 +30,7 @@ export default class GoogleAnalytics extends Component {
   };
 
   static contextTypes = {
-    router: React.PropTypes.func.isRequired
+    location: React.PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -41,20 +41,20 @@ export default class GoogleAnalytics extends Component {
     });
   }
 
-  shouldComponentUpdate(props, state) {
+  shouldComponentUpdate(props, state, context) {
     if (state.isReady) {
-      this.pageview();
+      this.pageview(context);
     }
 
     return false;
   }
 
-  pageview() {
-    if (!this.context.router) {
+  pageview(context) {
+    if (!context.location) {
       throw new Error('Router is not presented in the component context.');
     }
 
-    const path = this.context.router.getCurrentPath();
+    const path = context.location.pathname;
     if (this.latestUrl === path) {
       return;
     }

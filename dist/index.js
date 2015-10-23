@@ -64,21 +64,21 @@ var GoogleAnalytics = (function (_Component) {
     }
   }, {
     key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(props, state) {
+    value: function shouldComponentUpdate(props, state, context) {
       if (state.isReady) {
-        this.pageview();
+        this.pageview(context);
       }
 
       return false;
     }
   }, {
     key: 'pageview',
-    value: function pageview() {
-      if (!this.context.router) {
+    value: function pageview(context) {
+      if (!context.location) {
         throw new Error('Router is not presented in the component context.');
       }
 
-      var path = this.context.router.getCurrentPath();
+      var path = context.location.pathname;
       if (this.latestUrl === path) {
         return;
       }
@@ -130,7 +130,7 @@ var GoogleAnalytics = (function (_Component) {
   }, {
     key: 'contextTypes',
     value: {
-      router: _react2['default'].PropTypes.func.isRequired
+      location: _react2['default'].PropTypes.object.isRequired
     },
     enumerable: true
   }]);
